@@ -206,4 +206,13 @@ for dir in src/*/ ; do
     cd ../../../
 done
 
-echo "All cursors successfully converted"
+cd out/
+tar -cJf MLPFiM-all.tar.xz *
+cd ../
+
+for dir in out/*/ ; do
+    dir=$(basename $dir)
+    tar -C out -cJf out/$dir.tar.xz $dir/
+done
+
+echo "All cursors successfully converted and compressed"
