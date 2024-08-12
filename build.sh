@@ -5,6 +5,21 @@ if ! command -v xcursorgen > /dev/null 2>&1; then
     exit 1
 fi
 
+COMPRESS=no
+
+while [ $# -gt 0 ]; do
+    key="$1"
+    case $key in
+        -c|--compress)
+            COMPRESS=yes
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
 rm -r ./out
 
 for dir in src/*/ ; do
@@ -206,13 +221,15 @@ for dir in src/*/ ; do
     cd ../../../
 done
 
-cd out/
-tar -cJf MLPFiM-all.tar.xz *
-cd ../
+echo "All cursors successfully converted"
 
-for dir in out/*/ ; do
-    dir=$(basename $dir)
-    tar -C out -cJf out/$dir.tar.xz $dir/
-done
+if [ "$COMPRESS" = "yes" ]; then
+    cd out/
+    tar -cJf MLPFiM-all.tar.xz *
+    cd ../
 
-echo "All cursors successfully converted and compressed"
+    for dir in out/*/ ; do
+        dir=$(basename $dir)
+        tar -C out -cJf out/$dir.tar.xz $dir/
+    done
+fi
