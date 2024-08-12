@@ -26,7 +26,15 @@ The cursors that are included:
 
 - xcursorgen
 
-open a terminal in this directory and run `./build.sh`.
+Install the prerequisites, then open a terminal in this directory and run `./build.sh`.
+
+You can specify which cursors you want to build, and adding `-c` will compress each cursor:
+
+```bash
+./build.sh -c Fluttershy Applejack Pinkie-Pie
+```
+
+Omitting cursor names will build all cursors by default.
 
 ### Rebuilding source files
 

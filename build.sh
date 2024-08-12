@@ -1,29 +1,16 @@
 #!/bin/sh
 
 if ! command -v xcursorgen > /dev/null 2>&1; then
-    echo "xcursorgen is required to build cursors"
+    echo "pony-cursors: xcursorgen is required to build cursors"
     exit 1
 fi
 
-COMPRESS=no
-
-while [ $# -gt 0 ]; do
-    key="$1"
-    case $key in
-        -c|--compress)
-            COMPRESS=yes
-            shift
-            ;;
-        *)
-            break
-            ;;
-    esac
-done
-
-rm -r ./out
-
-for dir in src/*/ ; do
-    dir=$(basename $dir)
+convert_cursor() {
+    dir=$1
+    if [ ! -d "src/$dir" ]; then
+        echo "pony-cursors: src/$dir does not exist."
+        return
+    fi
     mkdir -p out/MLPFiM-$dir/cursors/
     printf "[Icon Theme]\nName=mlpfim-$dir\nComment=A my-little-pony cursor theme created by Damien Allen" > out/MLPFiM-$dir/index.theme
     cd out/MLPFiM-$dir/cursors/
@@ -215,21 +202,51 @@ for dir in src/*/ ; do
                 ln -s -r bottom_right_corner fcf1c3c7cd4491d801f1e1c78f100000
                 ;;
             *)
-                echo "$dir/$curs is not a recognized cursor"
+                echo "pony-cursors: $dir/$curs is not a recognized cursor"
+                ;;
         esac
     done
+    echo "pony-cursors: $dir generated"
     cd ../../../
+}
+
+rm -rf ./out
+
+ALL=yes
+COMPRESS=no
+
+while [ $# -gt 0 ]; do
+    key="$1"
+    case $key in
+        -c|--compress)
+            COMPRESS=yes
+            shift
+            ;;
+        *)
+            ALL=no
+            convert_cursor $key
+            shift
+            ;;
+    esac
 done
 
-echo "All cursors successfully converted"
+if [ "$ALL" = "yes" ]; then
+    for dir in src/*/ ; do
+        dir=$(basename $dir)
+        convert_cursor $dir
+    done
+fi
 
 if [ "$COMPRESS" = "yes" ]; then
-    cd out/
-    tar -cJf MLPFiM-all.tar.xz *
-    cd ../
+    if [ "$ALL" = "yes" ]; then
+        cd out/
+        tar -cJf MLPFiM-all.tar.xz *
+        cd ../
+    fi
 
     for dir in out/*/ ; do
         dir=$(basename $dir)
         tar -C out -cJf out/$dir.tar.xz $dir/
+        echo "pony-cursors: $dir compressed"
     done
 fi
