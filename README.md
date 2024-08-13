@@ -1,6 +1,6 @@
 # My Little Pony:Friendship is Magic X Cursors
 
-This is port of a set of MLPFiM cursors made for windows to X cursor format, [originally created by Damien Allen.](https://www.deviantart.com/sullindir)
+This is port of a set of MLPFiM cursors made for windows to X cursor format, [originally created by Damien Allen.](https://www.deviantart.com/sullindir/journal/My-Little-Pony-Cursors-267244235)
 
 The cursors that are included:
 
