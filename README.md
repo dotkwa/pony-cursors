@@ -43,7 +43,13 @@ Omitting cursor names will build all cursors by default.
 - win2xcur
 - xcur2png
 
-If you ever need to rebuild the src files, run `./build-src.sh`
+`./build-src.sh` is used to regenerate the source files from the windows cursors.
+
+Just like `./build.sh`, you can specify which cursors you want to regenerate, and omitting names will regenerate all of them.
+
+```bash
+./build-src.sh Fluttershy
+```
 
 ## Disclaimer
 
